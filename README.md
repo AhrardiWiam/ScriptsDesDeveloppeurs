@@ -50,8 +50,7 @@ https://github.com/user-attachments/assets/0f73784d-283e-4684-8757-0d4d05e1304c
 
 https://github.com/user-attachments/assets/0731cd90-902f-4b3d-a3b6-a2b64a76e141
 
-## Démonstration de l' Exercice 3: Effectuer une requête libre et obtenir la méta information sur les
-types de données du résultat
+## Démonstration de l' Exercice 3: Effectuer une requête libre et obtenir la méta information sur les types de données du résultat
 
 https://github.com/user-attachments/assets/efaff082-38fc-433f-b55f-6d3f2f660be0
 
