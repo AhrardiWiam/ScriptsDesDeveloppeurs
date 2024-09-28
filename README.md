@@ -3,6 +3,12 @@
 ## Objectif
 Le projet **Scripts des Développeurs** a pour objectif de suivre et d'analyser la réalisation des scripts par les développeurs d'un projet. Un rapport hebdomadaire est généré par le chef de projet, enregistrant quotidiennement le nombre de scripts réalisés par chaque développeur. Ces informations sont stockées dans une base de données MySQL et peuvent être consultées via une application Java.
 
+## Outils Utilisés
+  - Langage Java
+  - IDE NetBeans
+  - Base de données MySQL
+  - API JDBC
+
 ## Structure du Projet
 Le projet est organisé de la manière suivante :
 
