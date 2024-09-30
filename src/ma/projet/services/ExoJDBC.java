@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ma.projet.services;
 
 import java.sql.Connection;
@@ -12,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ma.projet.connexion.Connexion;
@@ -22,7 +19,7 @@ import ma.projet.entities.Devdata;
  *
  * @author user
  */
-public class ExoJDBC {
+public class ExoJDBC implements IDao<Devdata>{
 
     public void createTable() {
         Connection cn = null;
@@ -50,6 +47,7 @@ public class ExoJDBC {
         }
     }
 
+    @Override 
     public void updateTable(Devdata d) {
         Connection cn = null;
         Statement st = null;
@@ -84,7 +82,8 @@ public class ExoJDBC {
             st = cn.createStatement();
             rs = st.executeQuery(req);
             while (rs.next()) {
-                System.out.println("La personne ayant réalisé le  maximum de script (" + rs.getInt(3) + ") en " + rs.getString(2) + " est " + rs.getString(1));
+                System.out.println("La personne ayant réalisé le  maximum de script (" + rs.getInt(3) 
+                        + ") en " + rs.getString(2) + " est " + rs.getString(1));
             }
         } catch (SQLException e) {
             Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, e);
@@ -149,62 +148,67 @@ public class ExoJDBC {
     }
 
     public void DevScript(String s) {
-    Connection cn = null;
-    Statement st = null;
-    ResultSet rs = null;
-    try {
-        // c'est pour supprimer les espaces et convertir en majuscules
-        s = s.trim().toUpperCase();
-
-        String req = "SELECT SUM(NBScripts) AS n FROM devdata WHERE UPPER(TRIM(Developpeurs)) = '" + s + "'";
-        
-        cn = Connexion.getCn();
-        st = cn.createStatement();
-        rs = st.executeQuery(req);
-        if (rs.next()) {
-            if(rs.getInt(1)==0){  System.out.println("Votre entrée n'existe pas dans la base de données");
-            }else 
-                System.out.println("Le nombre total de scripts du developpeur " + s + " est " + rs.getInt("n"));
-        }
-    } catch (SQLException e) {
-        Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, e);
-    } finally {
+        Connection cn = null;
+        Statement st = null;
+        ResultSet rs = null;
         try {
-            st.close();
-            cn.close();
-        } catch (SQLException ex) {
-            System.out.println("Impossible de libérer les ressources");
+            // c'est pour supprimer les espaces et convertir en majuscules
+            s = s.trim().toUpperCase();
+
+            String req = "SELECT SUM(NBScripts) AS n FROM devdata WHERE UPPER(TRIM(Developpeurs)) = '" + s + "'";
+
+            cn = Connexion.getCn();
+            st = cn.createStatement();
+            rs = st.executeQuery(req);
+            if (rs.next()) {
+                if (rs.getInt(1) == 0) {
+                    System.out.println("Votre entrée n'existe pas dans la base de données");
+                } else {
+                    System.out.println("Le nombre total de scripts du developpeur " + s + " est " + rs.getInt("n"));
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            try {
+                st.close();
+                cn.close();
+            } catch (SQLException ex) {
+                System.out.println("Impossible de libérer les ressources");
+            }
         }
     }
-}
 
+    public void TypeReq() {
 
-    public void TypeReq(String s) {
-        
-        Connection cn=null;
-         Statement st=null;
+        Connection cn = null;
+        Statement st = null;
+        Scanner sc = new Scanner(System.in);
         try {
             cn = Connexion.getCn();
             st = cn.createStatement();
+
+            System.out.print("Entrez votre requête SQL : ");
+            String s = sc.nextLine();
             Boolean type = st.execute(s);//si type est true donc c'est une requete d'interrogation
             if (type) {
-            List<Devdata> devdatas = new ArrayList<>();
-            ResultSet rs= st.executeQuery(s);
-            ResultSetMetaData rsinfo = rs.getMetaData();
-            System.out.println("Le nombre de colonnes de la table renvoyé est "+ rsinfo.getColumnCount());
-            for(int i=1;i<=rsinfo.getColumnCount();i++){
-            System.out.println( rsinfo.getColumnName(i) +" de type "+ rsinfo.getColumnTypeName(i));
-            }
-            System.out.println("Votre requête renvoie la table suivante:");
-              while (rs.next()){
-                 for(int i=1;i<=rsinfo.getColumnCount();i++){
-                 System.out.print(rs.getObject(i)+"  |  " );
-                 }
-                 System.out.println( );
-              }
-                
-            }else{
-            System.out.println(st.getUpdateCount()+" lignes ont été modifiées dans la table Devdata");
+                List<Devdata> devdatas = new ArrayList<>();
+                ResultSet rs = st.executeQuery(s);
+                ResultSetMetaData rsinfo = rs.getMetaData();
+                System.out.println("Le nombre de colonnes de la table renvoyé est " + rsinfo.getColumnCount());
+                for (int i = 1; i <= rsinfo.getColumnCount(); i++) {
+                    System.out.println(rsinfo.getColumnName(i) + " de type " + rsinfo.getColumnTypeName(i));
+                }
+                System.out.println("Votre requête renvoie la table suivante:");
+                while (rs.next()) {
+                    for (int i = 1; i <= rsinfo.getColumnCount(); i++) {
+                        System.out.print(rs.getObject(i) + "  |  ");
+                    }
+                    System.out.println();
+                }
+
+            } else {
+                System.out.println(st.getUpdateCount() + " lignes ont été modifiées dans la table Devdata");
             }
         } catch (SQLException ex) {
             Logger.getLogger(Connexion.class.getName()).log(Level.SEVERE, null, ex);
@@ -212,10 +216,12 @@ public class ExoJDBC {
             try {
                 st.close();
                 cn.close();
-            }catch (SQLException e) {
+            } catch (SQLException e) {
                 System.out.println("Impossible de libérer les ressources");
             }
-        
+
+        }
     }
-}
+
+   
 }

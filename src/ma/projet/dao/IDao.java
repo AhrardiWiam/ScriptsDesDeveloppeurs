@@ -12,10 +12,7 @@ import java.util.List;
  * @author user
  */
 public interface IDao<T> {
-    boolean createTable(T o);
-    boolean delete(T o);
-    boolean updateTable(T o);
-    void maxScript (T o);
+    void updateTable(T o);
     //List<T> displayTable ();
     //T findByDeveloppeurs(String s);
 }

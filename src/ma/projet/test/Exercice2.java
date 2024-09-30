@@ -11,9 +11,9 @@ public class Exercice2 {
 
     public static void main(String[] args) {
         ExoJDBC ej = new ExoJDBC();
-       // ej.NbrScript();
-        //ej.sortList();
-        //ej.totalScript();
-        ej.DevScript("alamio ");
+        //ej.NbrScript();//Identification du développeur ayant réalisé le maximum de scripts en une journée.
+        //ej.sortList();//Affichage de la liste des développeurs triée par nombre décroissant
+        //ej.totalScript();//Calcul du nombre total de scripts réalisés en une semaine. 
+        ej.DevScript("alami ");//Calcul du nombre total de scripts réalisés par un dééveloppeur donné.
     }
 }
