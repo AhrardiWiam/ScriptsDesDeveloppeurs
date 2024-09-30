@@ -13,6 +13,5 @@ import java.util.List;
  */
 public interface IDao<T> {
     void updateTable(T o);
-    //List<T> displayTable ();
-    //T findByDeveloppeurs(String s);
+  
 }
